@@ -27,7 +27,6 @@ export default function App() {
           onClick={() => {
             setIsModalOpen(false);
             setColorSelected("");
-            // buttonRef.current.focus();
           }}
         >
           {/* screen reader will read the span / aria-label wont translate sometimes */}

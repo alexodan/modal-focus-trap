@@ -7,22 +7,19 @@ const focus = (elementRef) => {
   const focusableElements = elementRef.current?.querySelectorAll(
     'button, input, a[href], [tabindex="0"], textarea, select'
   );
-  const focusedElement = document.activeElement;
   const [first, last] = [
     focusableElements[0],
     focusableElements[focusableElements.length - 1],
   ];
   const cbFirst = (e) => {
-    if (e.shiftKey && e.key == "Tab" && focusedElement === first) {
+    if (e.shiftKey && e.key == "Tab") {
       e.preventDefault();
-      console.log(last);
       last.focus();
     }
   };
   const cbLast = (e) => {
-    if (e.code === "Tab" && focusedElement === last) {
+    if (e.code === "Tab") {
       e.preventDefault();
-      console.log(first);
       first.focus();
     }
   };

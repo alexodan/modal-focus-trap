@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "./useFocusTrap";
-import { useOpenState } from "./useOpenState";
 
 export const Modal = ({
   isOpen: isOpenProp,
@@ -11,12 +10,13 @@ export const Modal = ({
 }) => {
   const modalRef = useRef();
   const lastFocusableEl = useRef();
-  const [open, setOpen] = useOpenState({
-    defaultOpen: defaultOpen,
-    isOpen: isOpenProp,
-    onClose: onClose,
-  });
+  const [open, setOpen] = useState(isOpenProp ?? defaultOpen);
+
   useFocusTrap(modalRef, [open]);
+
+  useEffect(() => {
+    setOpen(isOpenProp);
+  }, [isOpenProp]);
 
   useEffect(() => {
     if (open) {
@@ -34,14 +34,12 @@ export const Modal = ({
   useEffect(() => {
     if (open && modalRef.current) {
       modalRef.current.addEventListener("keydown", (e) => {
-        console.log("typed:", e.key);
         if (e.key === "Escape") {
-          // close the modal
-          setOpen(false);
+          onClose();
         }
       });
     }
-  }, [open, setOpen]);
+  }, [open, onClose]);
 
   if (!open) {
     return null;
